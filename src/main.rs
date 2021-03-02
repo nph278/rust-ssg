@@ -2,6 +2,7 @@ use std::env;
 mod build;
 mod build_dir;
 mod build_file;
+mod copy_static;
 mod init;
 mod print;
 
