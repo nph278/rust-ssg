@@ -18,10 +18,10 @@ pub fn info(text: &str) {
   );
 }
 
-pub fn warning(text: &str) {
-  println!(
-    "{} {}",
-    colored::ColoredString::from("WARNING!").color("yellow"),
-    colored::ColoredString::from(text).color("yellow")
-  );
-}
+// pub fn warning(text: &str) {
+//   println!(
+//     "{} {}",
+//     colored::ColoredString::from("WARNING!").color("yellow"),
+//     colored::ColoredString::from(text).color("yellow")
+//   );
+// }
