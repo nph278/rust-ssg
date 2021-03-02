@@ -34,5 +34,4 @@ pub fn build_file(root_dir: &str, path: &str, template: &String) {
     )
     .ok();
   }
-  println!("{}", file);
 }

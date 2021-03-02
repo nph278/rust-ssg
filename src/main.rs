@@ -2,6 +2,7 @@ use std::env;
 mod build;
 mod build_dir;
 mod build_file;
+mod init;
 mod print;
 
 fn main() {
@@ -12,6 +13,8 @@ fn main() {
         let command = &args[1];
         if command == "build" {
             build::build();
+        } else if command == "init" {
+            init::init();
         } else {
             print::error(&*format!("Unknown command: {}", command));
         }
