@@ -3,6 +3,7 @@ mod build;
 mod build_dir;
 mod build_file;
 mod copy_static;
+mod dev;
 mod init;
 mod print;
 
@@ -16,6 +17,8 @@ fn main() {
             build::build();
         } else if command == "init" {
             init::init();
+        } else if command == "dev" {
+            dev::dev();
         } else {
             print::error(&*format!("Unknown command: {}", command));
         }
