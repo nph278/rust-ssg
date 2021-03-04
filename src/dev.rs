@@ -29,14 +29,14 @@ pub fn dev() {
 
     loop {
       match rx.recv() {
-        Ok(event) => match event {
+        Ok(event) => match &event {
           DebouncedEvent::Write(path) => {
             if !path
               .to_str()
               .unwrap()
               .contains(&*format!("{}/build", root_dir))
             {
-              build::build()
+              build::build();
             }
           }
           DebouncedEvent::Create(path) => {
@@ -45,7 +45,7 @@ pub fn dev() {
               .unwrap()
               .contains(&*format!("{}/build", root_dir))
             {
-              build::build()
+              build::build();
             }
           }
           _ => (),

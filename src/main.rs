@@ -8,9 +8,13 @@ mod init;
 mod print;
 
 fn main() {
+    const HELP_STRING: &str =
+        "Use `rust-ssg build` to build out the site, and `rust-ssg dev` to start the server.";
+
     let args: Vec<String> = env::args().collect();
     if args.len() == 1 {
-        print::error("No command specified.")
+        print::info(HELP_STRING);
+        print::error("No command specified.");
     } else {
         let command = &args[1];
         if command == "build" {
@@ -20,6 +24,7 @@ fn main() {
         } else if command == "dev" {
             dev::dev();
         } else {
+            print::info(HELP_STRING);
             print::error(&*format!("Unknown command: {}", command));
         }
     }

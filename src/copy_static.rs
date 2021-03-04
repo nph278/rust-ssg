@@ -6,10 +6,10 @@ pub fn copy_static(root_dir: &str) {
     let unwrapped = entry.unwrap();
     let path = unwrapped.to_str().unwrap();
 
-    fs::copy(
-      &*format!("{}/static/{}", &root_dir, &path[7..]),
-      &*format!("{}/build/{}", &root_dir, &path[7..]),
-    )
-    .ok();
+    let file = fs::read_to_string(&*format!("{}/{}", &root_dir, &path))
+      .unwrap()
+      .to_string();
+
+    fs::write(&*format!("{}/build/{}", &root_dir, &path[7..]), file).ok();
   }
 }
