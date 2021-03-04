@@ -23,6 +23,10 @@ Edit pages/index.md to edit this page!
 "#;
   const DEFAULT_CSS: &str = r#"/* Some CSS */
 
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
 h1 {
   color: red;
 }
