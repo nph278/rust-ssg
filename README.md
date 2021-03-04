@@ -14,7 +14,7 @@ First, clone the repo.
 git clone https://github.com/nph278/rust-ssg.git
 ```
 
-Then, run `cargo build --release` to build out the project. You can install the build on your computer with `install target/release-rust-ssg usr/local/bin/rust-ssg`.
+Then, run `cargo build --release` to build out the project. You can install the build on your computer with `install target/release/rust-ssg usr/local/bin/rust-ssg`.
 
 ## Usage
 
