@@ -11,64 +11,49 @@ use std::thread;
 use std::time::Duration;
 
 pub fn dev() {
+  let root_dir_pathbuf = env::current_dir().unwrap();
+  let root_dir = root_dir_pathbuf.to_str().unwrap();
+
   print::info("Listing on http://localhost:3000");
 
   // Thread for building
-  thread::spawn(move || {
-    build::build();
+  thread::Builder::new()
+    .name("building-thread".to_string())
+    .spawn(|| {
+      let root_dir_pathbuf = env::current_dir().unwrap();
+      let root_dir = root_dir_pathbuf.to_str().unwrap();
 
-    let root_dir_pathbuf = env::current_dir().unwrap();
-    let root_dir = root_dir_pathbuf.to_str().unwrap();
-    let (tx, rx) = channel();
-    let mut watcher = watcher(tx, Duration::from_secs(0)).unwrap();
-    watcher.watch("./pages", RecursiveMode::Recursive).unwrap();
-    watcher.watch("./static", RecursiveMode::Recursive).unwrap();
-    watcher
-      .watch("./template.html", RecursiveMode::Recursive)
-      .unwrap();
+      build::build();
+      let (tx, rx) = channel();
+      let mut watcher = watcher(tx, Duration::from_secs(0)).unwrap();
+      watcher.watch("./pages", RecursiveMode::Recursive).unwrap();
+      watcher.watch("./static", RecursiveMode::Recursive).unwrap();
+      watcher
+        .watch("./template.html", RecursiveMode::Recursive)
+        .unwrap();
 
-    loop {
-      match rx.recv() {
-        Ok(event) => match &event {
-          DebouncedEvent::Write(path) => {
-            if !path
-              .to_str()
-              .unwrap()
-              .contains(&*format!("{}/build", root_dir))
-            {
-              println!("--------------------");
-              build::build();
-            }
-          }
-          DebouncedEvent::Create(path) => {
-            if !path
-              .to_str()
-              .unwrap()
-              .contains(&*format!("{}/build", root_dir))
-            {
-              println!("--------------------");
-              build::build();
-            }
-          }
-          _ => (),
-        },
-        Err(_) => (),
+      loop {
+        match rx.recv() {
+          Ok(event) => match &event {
+            DebouncedEvent::Write(path) => run_build(&path, &root_dir),
+            DebouncedEvent::Create(path) => run_build(&path, &root_dir),
+            _ => (),
+          },
+          Err(_) => (),
+        }
       }
-    }
-  });
+    })
+    .ok();
 
   let listener = TcpListener::bind("localhost:3000").unwrap();
 
   for stream in listener.incoming() {
     let stream = stream.unwrap();
-    handle_connection(stream)
+    handle_connection(stream, root_dir)
   }
 }
 
-fn handle_connection(mut stream: std::net::TcpStream) {
-  let root_dir_pathbuf = env::current_dir().unwrap();
-  let root_dir = root_dir_pathbuf.to_str().unwrap();
-
+fn handle_connection(mut stream: std::net::TcpStream, root_dir: &str) {
   let mut buffer = [0; 1024];
 
   stream.read(&mut buffer).unwrap();
@@ -104,4 +89,15 @@ fn handle_connection(mut stream: std::net::TcpStream) {
   }
   stream.write(response.as_bytes()).unwrap();
   stream.flush().unwrap();
+}
+
+fn run_build(path: &std::path::PathBuf, root_dir: &str) {
+  if !path
+    .to_str()
+    .unwrap()
+    .contains(&*format!("{}/build", root_dir))
+  {
+    println!("--------------------");
+    build::build();
+  }
 }
