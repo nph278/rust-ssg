@@ -1,5 +1,4 @@
 use colored::*;
-use std::process;
 
 pub fn error(text: &str) {
   println!(
@@ -7,7 +6,6 @@ pub fn error(text: &str) {
     colored::ColoredString::from("ERROR!").color("red"),
     colored::ColoredString::from(text).color("red")
   );
-  process::exit(1)
 }
 
 pub fn info(text: &str) {
