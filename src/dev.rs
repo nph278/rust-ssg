@@ -36,6 +36,7 @@ pub fn dev() {
               .unwrap()
               .contains(&*format!("{}/build", root_dir))
             {
+              println!("--------------------");
               build::build();
             }
           }
@@ -45,6 +46,7 @@ pub fn dev() {
               .unwrap()
               .contains(&*format!("{}/build", root_dir))
             {
+              println!("--------------------");
               build::build();
             }
           }
