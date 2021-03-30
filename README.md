@@ -18,8 +18,8 @@ Then, run `cargo build --release` to build out the project. You can install the 
 
 ## Usage
 
-Run `cargo-ssg init` in an empty folder to create a website.
+Run `rust-ssg init` in an empty folder to create a website.
 
-You can now build the default site with `cargo-ssg build`.
+You can now build the default site with `rust-ssg build`.
 
-To start developing, run `cargo-ssg dev` and go to `localhost:3000` in you browser.
+To start developing, run `rust-ssg dev` and go to `localhost:3000` in you browser.
